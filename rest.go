@@ -338,8 +338,8 @@ func restStartHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create the container
-	containerName := fmt.Sprintf("tryit-%s", petname.Adjective())
-	containerUsername := petname.Adjective()
+	containerName := fmt.Sprintf("%s-%s", petname.Adverb(), petname.Name())
+	containerUsername := petname.Name()
 	containerPassword := petname.Adjective()
 	id := uuid.NewRandom().String()
 

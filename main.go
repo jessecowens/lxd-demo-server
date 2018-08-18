@@ -10,6 +10,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"crypto/tls"
 
 	"github.com/gorilla/mux"
 	"github.com/lxc/lxd/client"
@@ -210,10 +211,45 @@ func run() error {
 	r.HandleFunc("/1.0/statistics", restStatisticsHandler)
 	r.HandleFunc("/1.0/terms", restTermsHandler)
 
-	err = http.ListenAndServe(config.ServerAddr, r)
+	cfg := &tls.Config{
+	 MinVersion:               tls.VersionTLS12,
+         CurvePreferences:         []tls.CurveID{tls.CurveP521, tls.CurveP384, tls.CurveP256},
+         PreferServerCipherSuites: true,
+         CipherSuites: []uint16{
+            tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+            tls.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+            tls.TLS_RSA_WITH_AES_256_GCM_SHA384,
+            tls.TLS_RSA_WITH_AES_256_CBC_SHA,
+        },
+    }
+	srv := &http.Server{
+	 Addr:         config.ServerAddr,
+         Handler:      r,
+         TLSConfig:    cfg,
+         TLSNextProto: make(map[string]func(*http.Server, *tls.Conn, http.Handler), 0),
+        }
+	
+	err = srv.ListenAndServeTLS("server.crt","server.key")
 	if err != nil {
-		return err
+	return err
 	}
+	
+	// Set up the HTTPS server
+//	certManager := autocert.Manager{
+//	 Prompt: autocert.AcceptTOS,
+//	 HostPolicy: autocert.HostWhitelist("tryit.whatdoyouneedthatfordude.com"),
+//	 Cache: autocert.DirCache("certs"),
+//	}
+//	server := &http.Server{
+//	 Addr: config.ServerAddr,
+//	 TLSConfig: &tls.Config{
+//	   GetCertificate: certManager.GetCertificate,
+//	 },
+//	}
+//	err = server.ListenAndServeTLS("","")
+//	if err != nil {
+//		return err
+//	}
 
 	return nil
 }
