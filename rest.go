@@ -733,7 +733,7 @@ func restConsoleHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal server error", 500)
 		return
 	}
-	//defer conn.Close()
+	defer conn.Close()
 
 	// Connect to the container
 	env := make(map[string]string)
@@ -748,7 +748,6 @@ func restConsoleHandler(w http.ResponseWriter, r *http.Request) {
 	go func(conn *websocket.Conn, r io.Reader) {
 		in := shared.ReaderToChannel(r, -1)
 
-	conn.SetWriteDeadline(time.Now().Add(time.Minute * 30))
 	conn.SetReadDeadline(time.Now().Add(time.Minute * 30))
 		for {
 			buf, ok := <-in
@@ -765,9 +764,8 @@ func restConsoleHandler(w http.ResponseWriter, r *http.Request) {
 
 	// write handler
 	go func(conn *websocket.Conn, w io.Writer) {
-	
+
 	conn.SetWriteDeadline(time.Now().Add(time.Minute * 30))
-	conn.SetReadDeadline(time.Now().Add(time.Minute * 30))
 	for {
 			mt, payload, err := conn.ReadMessage()
 			if err != nil {
