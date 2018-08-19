@@ -44,7 +44,7 @@ func restFeedbackHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "OPTIONS" {
 		origin := r.Header.Get("Origin")
 		if origin != "" {
-			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		}
@@ -56,7 +56,7 @@ func restFeedbackHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func restFeedbackPostHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	// Get the id argument
@@ -98,7 +98,7 @@ func restFeedbackPostHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func restFeedbackGetHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	// Get the id argument
@@ -145,7 +145,7 @@ func restStatusHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	var failure bool
@@ -204,7 +204,7 @@ func restStatisticsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	// Validate API key
@@ -262,7 +262,7 @@ func restTermsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	// Generate the response
@@ -283,7 +283,7 @@ func restStartHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	body := make(map[string]interface{})
@@ -589,7 +589,7 @@ func restInfoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	// Get the id
@@ -680,7 +680,7 @@ func restConsoleHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com*")
 
 	// Get the id argument
 	id := r.FormValue("id")
@@ -725,6 +725,7 @@ func restConsoleHandler(w http.ResponseWriter, r *http.Request) {
 		CheckOrigin: func(r *http.Request) bool {
 			return true
 		},
+		HandshakeTimeout: (30 * time.Minute),
 	}
 
 	conn, err := upgrader.Upgrade(w, r, nil)
@@ -732,7 +733,7 @@ func restConsoleHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal server error", 500)
 		return
 	}
-	defer conn.Close()
+	//defer conn.Close()
 
 	// Connect to the container
 	env := make(map[string]string)
@@ -747,6 +748,8 @@ func restConsoleHandler(w http.ResponseWriter, r *http.Request) {
 	go func(conn *websocket.Conn, r io.Reader) {
 		in := shared.ReaderToChannel(r, -1)
 
+	conn.SetWriteDeadline(time.Now().Add(time.Minute * 30))
+	conn.SetReadDeadline(time.Now().Add(time.Minute * 30))
 		for {
 			buf, ok := <-in
 			if !ok {
@@ -762,7 +765,10 @@ func restConsoleHandler(w http.ResponseWriter, r *http.Request) {
 
 	// write handler
 	go func(conn *websocket.Conn, w io.Writer) {
-		for {
+	
+	conn.SetWriteDeadline(time.Now().Add(time.Minute * 30))
+	conn.SetReadDeadline(time.Now().Add(time.Minute * 30))
+	for {
 			mt, payload, err := conn.ReadMessage()
 			if err != nil {
 				if err != io.EOF {
@@ -783,6 +789,9 @@ func restConsoleHandler(w http.ResponseWriter, r *http.Request) {
 
 	// control socket handler
 	handler := func(conn *websocket.Conn) {
+	        conn.SetWriteDeadline(time.Now().Add(time.Minute * 30))
+	        conn.SetReadDeadline(time.Now().Add(time.Minute * 30))
+
 		for {
 			_, _, err = conn.ReadMessage()
 			if err != nil {
