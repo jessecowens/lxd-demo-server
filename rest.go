@@ -44,7 +44,8 @@ func restFeedbackHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "OPTIONS" {
 		origin := r.Header.Get("Origin")
 		if origin != "" {
-			w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			//w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		}
@@ -56,7 +57,9 @@ func restFeedbackHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func restFeedbackPostHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
+	
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	//w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	// Get the id argument
@@ -98,7 +101,9 @@ func restFeedbackPostHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func restFeedbackGetHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
+	
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	//w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	// Get the id argument
@@ -145,7 +150,9 @@ func restStatusHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
+	
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	//w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	var failure bool
@@ -204,7 +211,9 @@ func restStatisticsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
+	
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	//w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	// Validate API key
@@ -262,7 +271,9 @@ func restTermsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
+	
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	//w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	// Generate the response
@@ -283,7 +294,9 @@ func restStartHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	//w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	body := make(map[string]interface{})
@@ -589,7 +602,9 @@ func restInfoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
+	
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	//w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com")
 	w.Header().Set("Content-Type", "application/json")
 
 	// Get the id
@@ -680,7 +695,9 @@ func restConsoleHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com*")
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	//w.Header().Set("Access-Control-Allow-Origin", "https://linux-goals.com*")
 
 	// Get the id argument
 	id := r.FormValue("id")
