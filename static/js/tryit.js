@@ -1,7 +1,7 @@
 $(document).ready(function() {
     var tryit_terms_hash = "";
     var tryit_console = "";
-    var tryit_server = "tryit.whatdoyouneedthatfordude.com";
+    var tryit_server = "wp01.whatdoyouneedthatfordude.com:8080";
     var original_url = window.location.href.split("?")[0];
     var term = null
     var sock = null
@@ -108,7 +108,7 @@ $(document).ready(function() {
             hSubs   = element.offsetHeight - element.clientHeight,
             h       = element.clientHeight - hSubs,
 
-            x       = cell.clientWidth / 21,
+            x       = cell.clientWidth / 18,
             y       = cell.clientHeight,
 
             cols    = Math.max(Math.floor(w / x), 10),

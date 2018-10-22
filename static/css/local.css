@@ -151,7 +151,7 @@ h3:hover a.headerlink {
     display: table;
     margin: 0 auto;
     font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
-    font-size: 11px;
+    font-size: 12px !important;
     width: 100%;
 
     text-size-adjust: none;
@@ -237,4 +237,8 @@ h3:hover a.headerlink {
 .spinner > div:after {
     transform: rotate(-135deg);
     background: #bbb;
+}
+#tryit_console > div.terminal > div {
+	margin-top: -2px !important;
+	margin-bottom: -2px !important;
 }
