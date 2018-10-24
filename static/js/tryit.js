@@ -80,7 +80,7 @@ $(document).ready(function() {
                 cols: width,
                 rows: height,
                 useStyle: true,
-                screenKeys: false
+                screenKeys: true
             });
 
             $('#tryit_console_reconnect').css("display", "none");
