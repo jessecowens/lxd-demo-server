@@ -1,0 +1,23 @@
+container: "lamp-base"
+#image: ubuntu:16.04
+command: ["bash"]
+profiles:
+    - default
+feedback: false 
+feedback_timeout: 0
+quota_cpu: 1
+quota_disk: 1 
+quota_processes: 200
+quota_ram: 1024 
+quota_sessions: 50  
+quota_time: 3600
+server_addr: "[::]:8080"
+server_banned_ips:
+    - 1.2.3.4
+server_console_only: false
+server_containers_max: 50
+server_ipv6_only: true
+server_maintenance: false
+server_statistics_keys:
+    - 69280011-c8a5-4ef9-ae3d-e7caf4d06e06
+server_terms: |- 
